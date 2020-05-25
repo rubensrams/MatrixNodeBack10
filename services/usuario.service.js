@@ -9,18 +9,19 @@ class UsuarioService {
         return await this._usuarioRepositorio.getUsuarios();
     }
 
-    async createUsuario(googleUser) {
-        const usuarioDB = await this._usuarioRepositorio.getUsuarioEmail(googleUser.email);
+    async createUsuario(usuario, redsocial) {
+        const usuarioDB = await this._usuarioRepositorio.getUsuarioEmail(usuario.email);
 
         if (usuarioDB) {
-            if (usuarioDB.google === 0) {
-                throw new Error('El email de la cuenta ya está registrado en el sistema');
-            } else {
+            if (redsocial === usuarioDB.social) {
                 return usuarioDB;
+            } else {
+                throw new Error('El email de la cuenta ya está registrado en el sistema');
             }
         } else {
-            const nuevoUsrMatrizGoogle = usurioHelper.usuarioNuevoGoogle(googleUser);
-            return await this._usuarioRepositorio.createUsuario(nuevoUsrMatrizGoogle);
+            usuario.img = usurioHelper.omiteCaracter(usuario.img, redsocial).foto;
+            const nuevoUsrMatrix = usurioHelper.usuarioNuevoRedSocial(usuario, redsocial);
+            return await this._usuarioRepositorio.createUsuario(nuevoUsrMatrix);
         }
 
     }

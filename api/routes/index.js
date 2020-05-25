@@ -6,8 +6,6 @@ const compression = require("compression");
 module.exports = function({ UsuarioRutas }) {
     const router = Router();
     const apiRoute = Router();
-
-
     //Registrando midlewaren
     apiRoute
     //Permitir peticiones de otro dominio

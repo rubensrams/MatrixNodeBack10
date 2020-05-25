@@ -7,9 +7,12 @@ class UsuarioRepository {
 
     getUsuarios() {
         return this._db.mtz_usuario.findAll({
+            attributes: [
+                ['usuario', 'username'],
+            ],
             include: {
                 model: mtz_rol,
-                as: 'roles',
+                as: 'authorities',
                 through: {
                     attributes: []
                 }
@@ -19,10 +22,18 @@ class UsuarioRepository {
 
     async getUsuarioEmail(email) {
         const usuario = await mtz_usuario.findOne({
+            attributes: [
+                'id', ['usuario', 'user_name'],
+                'nombre',
+                'activo',
+                'email',
+                'foto',
+                'social'
+            ],
             where: { email: email },
             include: {
                 model: mtz_rol,
-                as: 'roles',
+                as: 'authorities',
                 through: {
                     attributes: []
                 }
@@ -33,12 +44,20 @@ class UsuarioRepository {
 
     async createUsuario(body) {
         const usr = await this._db.mtz_usuario.create(body);
-        await usr.setRoles([2]);
+        await usr.setAuthorities([2]);
         const usuario = await mtz_usuario.findOne({
+            attributes: [
+                'id', ['usuario', 'user_name'],
+                'nombre',
+                'activo',
+                'email',
+                'foto',
+                'social'
+            ],
             where: { email: usr.email },
             include: {
                 model: mtz_rol,
-                as: 'roles',
+                as: 'authorities',
                 through: {
                     attributes: []
                 }

@@ -27,21 +27,39 @@ class UsuarioController {
 
 
     async createUsuario(req, resp) {
-        //Este email se obtiene del midleware de la revision del token de google
         var usrGoogle = req.body.emailgoogle;
         try {
-            const create = await this._usuarioSerice.createUsuario(usrGoogle);
+            const create = await this._usuarioSerice.createUsuario(usrGoogle, 'GOOGLE');
             var token = this._jwt.sign({ usuario: create }, SEED, { expiresIn: 500 })
             return resp.status(200).send({
-                error: '00',
-                mensaje: 'Resultado exitoso',
                 usuario: create,
                 token: token
             });
         } catch (e) {
             return resp.status(500).send({
                 error: "100",
-                mensaje: e.message
+                error_description: e.message
+            });
+        }
+    }
+
+    async createUsuarioFB(req, resp) {
+        var usrFacebook = {
+            nombre: req.body.nombre,
+            img: req.body.img,
+            email: req.body.email
+        }
+        try {
+            const create = await this._usuarioSerice.createUsuario(usrFacebook, 'FACEBOOK');
+            var token = this._jwt.sign({ usuario: create }, SEED, { expiresIn: 500 })
+            return resp.status(200).send({
+                usuario: create,
+                token: token
+            });
+        } catch (e) {
+            return resp.status(500).send({
+                error: "100",
+                error_description: e.message
             });
         }
     }

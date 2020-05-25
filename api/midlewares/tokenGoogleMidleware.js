@@ -31,7 +31,7 @@ async function verifyTokenGoogle(token) {
 exports.verifyTokenGoogleRes = async function(req, resp, next) {
     //asi se recibe el token
     var token = req.body.token;
-
+    // console.log(token);
     //Para usar el await es necesario que la funcion sea async
     var googleUser = await verifyTokenGoogle(token)
         .catch(e => {

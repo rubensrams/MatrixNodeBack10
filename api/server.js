@@ -6,7 +6,6 @@ class Server {
         this._express = express();
         this._express.use(router);
     }
-
     start() {
         return new Promise((resolve, reject) => {
             const http = this._express.listen(this._config.PORT, () => {

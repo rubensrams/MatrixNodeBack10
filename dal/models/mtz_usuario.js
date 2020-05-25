@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         activo: DataTypes.INTEGER,
         email: DataTypes.STRING,
         foto: DataTypes.STRING,
-        google: DataTypes.INTEGER
+        social: DataTypes.STRING
     }, {
         //Evita las columnas updatedAt sequelize
         //Evita la pluralizacion del nombre de las tablas
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     mtz_usuario.associate = function(models) {
         mtz_usuario.belongsToMany(models.mtz_rol, {
             through: "mtz_usuario_rol",
-            as: "roles",
+            as: "authorities",
             foreignKey: "id_usuario"
         });
     };

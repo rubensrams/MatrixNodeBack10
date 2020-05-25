@@ -9,6 +9,7 @@ module.exports = function({ UsuarioController }) {
     // El bind es para usar la misma instancia
     router.get("/getUsuarios", UsuarioController.getUsuarios.bind(UsuarioController));
     router.post("/login/google", tokenGoogle, UsuarioController.createUsuario.bind(UsuarioController));
+    router.post("/login/facebook", UsuarioController.createUsuarioFB.bind(UsuarioController));
 
     return router;
 };

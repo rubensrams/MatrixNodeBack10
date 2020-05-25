@@ -1,13 +1,23 @@
 module.exports = {
-    usuarioNuevoGoogle: function(googleUser) {
+    usuarioNuevoRedSocial: function(usuarioRedSocial, redsocial) {
         return {
-            "usuario": googleUser.email,
+            "usuario": usuarioRedSocial.email,
             "password": 'xxxxx',
-            "nombre": googleUser.nombre,
+            "nombre": usuarioRedSocial.nombre,
             "activo": 1,
-            "email": googleUser.email,
-            "foto": googleUser.img,
-            "google": 1
+            "email": usuarioRedSocial.email,
+            "foto": usuarioRedSocial.img,
+            "social": redsocial
+        }
+    },
+
+    omiteCaracter: function(foto, redsocial) {
+        if (redsocial === 'FACEBOOK') {
+            var parameter_Start_index = foto.indexOf('?');
+            var foto = foto.substring(0, parameter_Start_index);
+        }
+        return {
+            foto
         }
     },
 }

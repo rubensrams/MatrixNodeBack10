@@ -6,9 +6,9 @@ const { NODE_ENV } = process.env;
 
 let currentEnv = DEVELOPMENT;
 
-if (NODE_ENV === "production") {
+if (NODE_ENV === "prod") {
     currentEnv = PRODUCTION;
-} else if (NODE_ENV === "development") {
+} else if (NODE_ENV === "dev") {
     currentEnv = DEVELOPMENT;
 }
 
