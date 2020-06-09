@@ -2,8 +2,10 @@ const { Router } = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const compression = require("compression");
+//Importar libreria para la subida de archivos
+const fileUpload = require('express-fileupload');
 
-module.exports = function({ UsuarioRutas }) {
+module.exports = function({ UsuarioRutas, UploadsRutas }) {
     const router = Router();
     const apiRoute = Router();
     //Registrando midlewaren
@@ -16,9 +18,12 @@ module.exports = function({ UsuarioRutas }) {
         //el req.body.parametro 
         .use(bodyParser.urlencoded({ extended: false }))
         //comprime las peticiones http
-        .use(compression());
+        .use(compression())
+        //Importar libreria para la subida de archivos
+        .use(fileUpload());
 
     apiRoute.use("/seguridad", UsuarioRutas);
+    apiRoute.use("/upload", UploadsRutas);
     router.use("/matrix", apiRoute);
 
     return router;

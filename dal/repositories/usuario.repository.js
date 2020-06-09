@@ -42,6 +42,29 @@ class UsuarioRepository {
         return usuario;
     }
 
+    async getUsuarioId(id) {
+        const usuario = await mtz_usuario.findOne({
+            attributes: [
+                'id', ['usuario', 'user_name'],
+                'nombre',
+                'activo',
+                'email',
+                'foto',
+                'social'
+            ],
+            where: { id: id },
+            include: {
+                model: mtz_rol,
+                as: 'authorities',
+                through: {
+                    attributes: []
+                }
+            }
+        });
+        return usuario;
+    }
+
+
     async createUsuario(body) {
         const usr = await this._db.mtz_usuario.create(body);
         await usr.setAuthorities([2]);
@@ -63,6 +86,16 @@ class UsuarioRepository {
                 }
             }
         });
+        return usuario;
+    }
+
+
+    async subeFoto(id, foto) {
+        const usuario = await mtz_usuario.update({ foto: foto }, {
+            where: {
+                id: id
+            }
+        })
         return usuario;
     }
 }

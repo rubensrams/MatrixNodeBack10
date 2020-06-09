@@ -1,6 +1,6 @@
 const { Router } = require("express");
 
-const tokenGoogle = require('../midlewares/tokenGoogleMidleware').verifyTokenGoogleRes;
+const tokenGoogleMD = require('../midlewares/tokenGoogleMidleware').verifyTokenGoogleRes;
 
 module.exports = function({ UsuarioController }) {
 
@@ -8,7 +8,7 @@ module.exports = function({ UsuarioController }) {
 
     // El bind es para usar la misma instancia
     router.get("/getUsuarios", UsuarioController.getUsuarios.bind(UsuarioController));
-    router.post("/login/google", tokenGoogle, UsuarioController.createUsuario.bind(UsuarioController));
+    router.post("/login/google", tokenGoogleMD, UsuarioController.createUsuario.bind(UsuarioController));
     router.post("/login/facebook", UsuarioController.createUsuarioFB.bind(UsuarioController));
 
     return router;
