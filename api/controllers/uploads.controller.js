@@ -1,3 +1,4 @@
+const upload = require("../midlewares/uploadMultiMidleware");
 class UploadsController {
 
     constructor({ UploadService }) {
@@ -5,9 +6,8 @@ class UploadsController {
     }
 
     async uploadFotoUsuario(req, resp) {
-        let id = req.params.id;
         var archivo = req.files.imagen;
-
+        let id = req.params.id;
         try {
             let usuarios = await this._uploadService.subeFotoUsuario(id, archivo);
             return resp.send({
@@ -36,6 +36,7 @@ class UploadsController {
             });
         }
     }
+
 }
 
 module.exports = UploadsController;

@@ -17,9 +17,10 @@ const path = require('path');
 const Routes = require('../api/routes');
 const UsuarioRutas = require('../api/routes/usuario.routes');
 const UploadsRutas = require('../api/routes/uploads.routes');
+const UploadsAnunciosRutas = require('../api/routes/uploadsanuncios.routes');
 
 //controllers
-const { UsuarioController, UploadsController } = require('../api/controllers/');
+const { UsuarioController, UploadsController, UploadsAnunciosController } = require('../api/controllers/');
 
 //Services
 const { UsuarioService, UploadService } = require("../services");
@@ -27,7 +28,7 @@ const { UsuarioService, UploadService } = require("../services");
 const db = require("../dal/models");
 
 //Repositories
-const { UsuarioRepository } = require("../dal/repositories")
+const { UsuarioRepository, GaleriaRepository } = require("../dal/repositories")
 
 
 const container = createContainer();
@@ -46,6 +47,8 @@ container
         UploadsController: asClass(UploadsController).singleton(),
         UploadsRutas: asFunction(UploadsRutas).singleton(),
 
+        UploadsAnunciosController: asClass(UploadsAnunciosController).singleton(),
+        UploadsAnunciosRutas: asFunction(UploadsAnunciosRutas).singleton(),
 
 
     })
@@ -67,7 +70,9 @@ container
     })
     .register({
         //Repositorios
-        UsuarioRepository: asClass(UsuarioRepository).singleton()
+        UsuarioRepository: asClass(UsuarioRepository).singleton(),
+        GaleriaRepository: asClass(GaleriaRepository).singleton()
     })
+
 
 module.exports = container;

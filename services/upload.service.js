@@ -1,9 +1,11 @@
-const usurioHelper = require('./helpers/usuario.helper')
+const usurioHelper = require('./helpers/usuario.helper');
+const uploadMultiHelper = require('./helpers/uploadMulti.helper');
 class UploadService {
 
-    constructor({ UsuarioRepository, fs, path }) {
+    constructor({ UsuarioRepository, fs, path, GaleriaRepository }) {
 
         this._usuarioRepositorio = UsuarioRepository;
+        this._galeriaRepository = GaleriaRepository
         this._fs = fs;
         this._path = path;
     }
@@ -21,6 +23,16 @@ class UploadService {
 
     async getFotoUsuario(foto) {
         return usurioHelper.getArchivoHelp(foto, this._fs, this._path);
+    }
+
+
+    async guardaGaleriaAnuncio(archivos, id) {
+        try {
+            let galeriaNueva = uploadMultiHelper.getNewGaleria(id, archivos);
+            return await this._galeriaRepository.creaGaleria(galeriaNueva);
+        } catch (e) {
+            throw new Error('Error al cargar la galeria en base de datos: ' + e);
+        }
     }
 }
 
