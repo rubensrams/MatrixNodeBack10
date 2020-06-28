@@ -1,10 +1,13 @@
 var PATH_UPLOAD_PROFILES = require('../../services/config/config').PATH_UPLOAD_PROFILES;
+var PATH_UPLOAD_PREVIEW_ANUNCIO = require('../../services/config/config').PATH_UPLOAD_PREVIEW_ANUNCIO;
+var PATH_UPLOAD_IMAGES_ANUNCIOS = require('../../services/config/config').PATH_UPLOAD_IMAGES_ANUNCIOS;
 
+const { API_SPRING } = require("../../config/enviroments/");
 module.exports = {
-    usuarioNuevoRedSocial: function(usuarioRedSocial, redsocial) {
+    usuarioNuevoRedSocial: function(usuarioRedSocial, redsocial, _bcrypt) {
         return {
             "usuario": usuarioRedSocial.email,
-            "password": 'xxxxx',
+            "password": _bcrypt.hashSync(redsocial, 10),
             "nombre": usuarioRedSocial.nombre,
             "activo": 1,
             "email": usuarioRedSocial.email,
@@ -29,9 +32,6 @@ module.exports = {
         let extension = nombreCorto[nombreCorto.length - 1];
         let nombreArchivo = `${ id }-${ new Date().getMilliseconds()}.${ extension}`;
 
-        if (!usuarioDB) {
-            throw new Error('El usuario no está registrado en el sistema');
-        }
         //Mover el archivo a un path
         var path = PATH_UPLOAD_PROFILES + nombreArchivo;
         var pathViejo = PATH_UPLOAD_PROFILES + usuarioDB.foto;
@@ -58,5 +58,31 @@ module.exports = {
             return _path.resolve(__dirname, '../../api/assets/noimage.png');
 
         }
+    },
+
+
+    getOptions: function(postData) {
+        var options = {
+            host: API_SPRING,
+            port: 8090,
+            path: '/matrix/seguridad/oauth/token',
+            method: 'POST',
+            // authentication headers
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + new Buffer.from('matrix-app-angular' + ':' + '12345').toString('base64'),
+                'Content-Length': postData.length
+            }
+        };
+        return options;
+    },
+    getUserData: function(username, password, _querystring) {
+
+        var postData = _querystring.stringify({
+            'username': username,
+            'password': password,
+            'grant_type': 'password'
+        });
+        return postData;
     }
 }

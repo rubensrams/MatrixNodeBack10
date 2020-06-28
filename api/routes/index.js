@@ -5,6 +5,7 @@ const compression = require("compression");
 //Importar libreria para la subida de archivos
 const fileUpload = require('express-fileupload');
 
+
 module.exports = function({ UsuarioRutas, UploadsRutas, UploadsAnunciosRutas }) {
     const router = Router();
     const apiRoute = Router();
@@ -22,6 +23,7 @@ module.exports = function({ UsuarioRutas, UploadsRutas, UploadsAnunciosRutas }) 
         .use(compression())
         //Importar libreria para la subida de archivos
         .use(fileUpload());
+
 
     apiRouteUploadMult
     //Permitir peticiones de otro dominio

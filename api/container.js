@@ -9,9 +9,13 @@ const config = require('../config/enviroments');
 //jwt
 const jwt = require('jsonwebtoken');
 
+const querystring = require('querystring');
+const bcrypt = require('bcryptjs');
+
 //Fyle system
 var fs = require('fs');
 const path = require('path');
+const http = require('http');
 
 //rutas
 const Routes = require('../api/routes');
@@ -28,7 +32,7 @@ const { UsuarioService, UploadService } = require("../services");
 const db = require("../dal/models");
 
 //Repositories
-const { UsuarioRepository, GaleriaRepository } = require("../dal/repositories")
+const { UsuarioRepository, GaleriaRepository, AnuncioRepository } = require("../dal/repositories")
 
 
 const container = createContainer();
@@ -57,7 +61,10 @@ container
         config: asValue(config),
         jwt: asValue(jwt),
         fs: asValue(fs),
-        path: asValue(path)
+        path: asValue(path),
+        querystring: asValue(querystring),
+        bcrypt: asValue(bcrypt),
+        http: asValue(http),
     })
     .register({
         //Servicios
@@ -71,7 +78,8 @@ container
     .register({
         //Repositorios
         UsuarioRepository: asClass(UsuarioRepository).singleton(),
-        GaleriaRepository: asClass(GaleriaRepository).singleton()
+        GaleriaRepository: asClass(GaleriaRepository).singleton(),
+        AnuncioRepository: asClass(AnuncioRepository).singleton()
     })
 
 

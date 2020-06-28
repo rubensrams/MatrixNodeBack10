@@ -1,5 +1,6 @@
 module.exports = {
     PORT: process.env.PORT,
+    API_SPRING: '192.168.99.100',
     DB: {
         username: "root",
         port: "3308",

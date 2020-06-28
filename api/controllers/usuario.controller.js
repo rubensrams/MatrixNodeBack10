@@ -29,12 +29,16 @@ class UsuarioController {
     async createUsuario(req, resp) {
         var usrGoogle = req.body.emailgoogle;
         try {
-            const create = await this._usuarioSerice.createUsuario(usrGoogle, 'GOOGLE');
-            var token = this._jwt.sign({ usuario: create }, SEED, { expiresIn: 500 })
-            return resp.status(200).send({
-                usuario: create,
-                token: token
-            });
+
+            const usuario = await this._usuarioSerice.createUsuario(usrGoogle, 'GOOGLE');
+            //  console.log(usuario)
+            let token = await this._usuarioSerice.getToken(usrGoogle.email, 'GOOGLE');
+            var jsonObject = JSON.parse(token);
+            //console.log(jsonObject);
+            // let jsonObject = JSON.parse(create);
+            //Para efectos el token en ves de hacerlo en node se usa la api de spring
+            //var token = this._jwt.sign({ usuario: create }, SEED, { expiresIn: 500 })
+            return resp.send(jsonObject);
         } catch (e) {
             return resp.status(500).send({
                 error: "100",
@@ -50,12 +54,12 @@ class UsuarioController {
             email: req.body.email
         }
         try {
-            const create = await this._usuarioSerice.createUsuario(usrFacebook, 'FACEBOOK');
-            var token = this._jwt.sign({ usuario: create }, SEED, { expiresIn: 500 })
-            return resp.status(200).send({
-                usuario: create,
-                token: token
-            });
+            const usuario = await this._usuarioSerice.createUsuario(usrFacebook, 'FACEBOOK');
+            let token = await this._usuarioSerice.getToken(usrFacebook.email, 'FACEBOOK');
+            let jsonObject = JSON.parse(token);
+            //console.log(jsonObject);
+            //var token = this._jwt.sign({ usuario: create }, SEED, { expiresIn: 500 })
+            return resp.send(jsonObject);
         } catch (e) {
             return resp.status(500).send({
                 error: "100",
